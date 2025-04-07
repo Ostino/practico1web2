@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nombre": "La Burguesía",
+    "logo": "burguesia.png",
+    "likes": 1,
+    "hamburguesas": [
+      {
+        "nombre": "Clásica Suprema",
+        "descripcion": "Doble carne, cheddar, lechuga y salsa especial.",
+        "precio": 45,
+        "foto": "classica.png"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Burger Lab",
+    "logo": "lab.png",
+    "likes": 6,
+    "hamburguesas": [
+      {
+        "nombre": "Fusion Bacon",
+        "descripcion": "Bacon crujiente, queso azul y cebolla caramelizada.",
+        "precio": 50,
+        "foto": "fusion.png"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "La locomotora",
+    "logo": "la_locomotora.png",
+    "likes": 4,
+    "hamburguesas": [
+      {
+        "nombre": "La toro",
+        "descripcion": "locomotora",
+        "precio": "34",
+        "foto": "la_toro3.png"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+
+<div class="restaurantes">
+  <% restaurantes.forEach(r => { %>
+    <div class="restaurante">
+      <a href="/restaurante/<%= r.id %>">
+        <img src="/images/<%= r.logo %>" alt="<%= r.nombre %>">
+        <h2><%= r.nombre %></h2>
+        <p>❤️ <%= r.likes || 0 %> likes</p> <!-- Aquí se muestran los likes -->
+      </a>
+    </div>
+  <% }) %>
+</div>
+
+
+<%- include('partials/footer') %>

@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+
+<h1><%= restaurante.nombre %></h1>
+
+<!-- Mostrar el botón de Like -->
+<button id="likeBtn" data-id="<%= restaurante.id %>">❤️ Dar Like</button>
+<span id="likeCount"><%= restaurante.likes %> likes</span> <!-- Contador de likes -->
+
+<div class="hamburguesas">
+  <% restaurante.hamburguesas.forEach(h => { %>
+    <div class="hamburguesa">
+      <img src="/images/<%= h.foto %>" alt="<%= h.nombre %>">
+      <h2><%= h.nombre %></h2>
+      <p><%= h.descripcion %></p>
+      <strong>Bs <%= h.precio %></strong>
+    </div>
+  <% }) %>
+</div>
+
+<script src="/script.js"></script>
+
+<%- include('partials/footer') %>
