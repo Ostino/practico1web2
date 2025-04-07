@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+  <h1>Restaurantes Participantes</h1>
+
+  <a href="/admincrt" class="boton-agregar">➕ Añadir Restaurante</a>
+
+  <div class="restaurantes">
+    <% restaurantes.forEach(restaurante => { %>
+      <div class="restaurante">
+        <a href="/restaurante/<%= restaurante.id %>">
+          <img src="/images/<%= restaurante.logo %>" alt="<%= restaurante.nombre %>" />
+          <h2><%= restaurante.nombre %></h2>
+        </a>
+        <p>❤️ <%= restaurante.likes %> likes</p>
+      </div>
+    <% }) %>
+  </div>
+
+
+
+<%- include('partials/footer') %>

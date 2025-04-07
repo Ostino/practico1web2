@@ -42,3 +42,16 @@ body {
     color: white;
   }
   
+  .boton-agregar {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .boton-agregar:hover {
+    background-color: #218838;
+  }
+  

@@ -3,7 +3,7 @@
     "id": 1,
     "nombre": "La Burguesía",
     "logo": "burguesia.png",
-    "likes": 1,
+    "likes": 2,
     "hamburguesas": [
       {
         "nombre": "Clásica Suprema",
@@ -31,7 +31,7 @@
     "id": 3,
     "nombre": "La locomotora",
     "logo": "la_locomotora.png",
-    "likes": 4,
+    "likes": 5,
     "hamburguesas": [
       {
         "nombre": "La toro",

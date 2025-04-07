@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 
-const restaurantes = require('./data/restaurantes.json');
 const likesController = require('./controllers/likesControllers');
 const multer = require('multer');
 const path = require('path');
@@ -12,10 +11,10 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.render('index', { restaurantes });
+app.get('/admin', (req, res) => {
+  const restaurantes = likesController.getRestaurantes();
+  res.render('adminhub', { restaurantes });
 });
-
 
 app.get('/', (req, res) => {
   const restaurantes = likesController.getRestaurantes();
@@ -44,7 +43,7 @@ app.get('/admincrt', (req, res) => {
   res.render('admin');
 });
 
-const storage = multer.memoryStorage(); // Usamos memoryStorage para poder renombrar
+const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 
 app.post('/admincrt', upload.fields([
@@ -61,17 +60,15 @@ app.post('/admincrt', upload.fields([
   const restaurantes = likesController.getRestaurantes();
   const id = restaurantes.length + 1;
 
-  // Generar nombres de imagen
   const cleanFileName = (str) => str.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
 
   const logoFileName = `${cleanFileName(nombre)}.png`;
   const hamburguesaFileName = `${cleanFileName(hamburguesa_nombre)}${id}.png`;
 
-  // Guardar las imágenes en el disco
   fs.writeFileSync(`public/images/${logoFileName}`, logo[0].buffer);
   fs.writeFileSync(`public/images/${hamburguesaFileName}`, hamburguesa_foto[0].buffer);
 
-  // Crear nuevo restaurante
+
   const nuevoRestaurante = {
     id,
     nombre,
