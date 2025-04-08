@@ -85,7 +85,7 @@ app.post('/admincrt', upload.fields([
   restaurantes.push(nuevoRestaurante);
   likesController.saveRestaurantes(restaurantes);
 
-  res.redirect('/');
+  res.redirect('/admin');
 });
 
 app.get('/admin/editarrestaurante/:id', (req, res) => {
@@ -139,6 +139,41 @@ app.post('/admin/editarrestaurante/:id', uploadup.single('logo'), (req, res) => 
   res.redirect('/admin');  // Redirigir al admin donde aparece la lista de restaurantes
 });
 
+app.post('/admin/borrarrestaurante/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  let data = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+
+  // Buscar el restaurante a eliminar
+  const index = data.findIndex(r => r.id === id);
+  
+  if (index === -1) return res.status(404).send('Restaurante no encontrado');
+
+  const restaurante = data[index];
+  
+  // Eliminar la imagen del logo del restaurante
+  const logoPath = path.join(__dirname, 'public/images', restaurante.logo);
+  fs.unlink(logoPath, (err) => {
+    if (err) {
+      console.error('Error al eliminar la imagen del logo:', err);
+    }
+  });
+
+  // Eliminar las imágenes de las hamburguesas del restaurante
+  restaurante.hamburguesas.forEach(hamburguesa => {
+    const hamburguesaImagePath = path.join(__dirname, 'public/images', hamburguesa.foto);
+    fs.unlink(hamburguesaImagePath, (err) => {
+      if (err) {
+        console.error(`Error al eliminar la imagen de la hamburguesa ${hamburguesa.nombre}:`, err);
+      }
+    });
+  });
+
+  // Eliminar el restaurante del arreglo de datos
+  data.splice(index, 1);  // Eliminar el restaurante por índice
+  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2));  // Guardar los cambios en el archivo JSON
+
+  res.redirect('/admin');  // Redirigir a la página de administración
+});
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
