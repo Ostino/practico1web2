@@ -54,4 +54,9 @@ body {
   .boton-agregar:hover {
     background-color: #218838;
   }
-  
+  /* Asegúrate de que la imagen tenga un tamaño de 500x500 px */
+.logo {
+  width: 500px;
+  height: 500px;
+  object-fit: cover; /* Esto asegura que la imagen se recorte adecuadamente si no es cuadrada */
+}

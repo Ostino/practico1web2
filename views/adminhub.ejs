@@ -1,21 +1,32 @@
 <%- include('partials/header') %>
 
-  <h1>Restaurantes Participantes</h1>
+<h1>Restaurantes Participantes</h1>
 
-  <a href="/admincrt" class="boton-agregar">➕ Añadir Restaurante</a>
+<a href="/admincrt" class="boton-agregar">➕ Añadir Restaurante</a>
 
-  <div class="restaurantes">
-    <% restaurantes.forEach(restaurante => { %>
-      <div class="restaurante">
-        <a href="/restaurante/<%= restaurante.id %>">
-          <img src="/images/<%= restaurante.logo %>" alt="<%= restaurante.nombre %>" />
-          <h2><%= restaurante.nombre %></h2>
+<div class="restaurantes">
+  <% restaurantes.forEach(restaurante => { %>
+    <div class="restaurante">
+        <img src="/images/<%= restaurante.logo %>" alt="<%= restaurante.nombre %>" />
+        <h2><%= restaurante.nombre %></h2>
+      <p>❤️ <%= restaurante.likes %> likes</p>
+
+      <!-- Botones de administración -->
+      <div class="botones-admin">
+        <a href="/admin/editarrestaurante/<%= restaurante.id %>">
+          <button>Editar Restaurante</button>
         </a>
-        <p>❤️ <%= restaurante.likes %> likes</p>
+
+        <a href="/admin/restauranteadd/<%= restaurante.id %>">
+          <button>Editar Hamburguesas</button>
+        </a>
+
+        <form action="/admin/borrarrestaurante/<%= restaurante.id %>" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('¿Estás seguro de borrar este restaurante?')">Borrar</button>
+        </form>
       </div>
-    <% }) %>
-  </div>
-
-
+    </div>
+  <% }) %>
+</div>
 
 <%- include('partials/footer') %>

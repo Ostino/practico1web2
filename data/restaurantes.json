@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "nombre": "La Burguesía",
+    "nombre": "La Burguesía 2",
     "logo": "burguesia.png",
     "likes": 2,
     "hamburguesas": [
@@ -40,5 +40,19 @@
         "foto": "la_toro3.png"
       }
     ]
+  },
+  {
+    "id": 4,
+    "nombre": "El tren 5",
+    "likes": 0,
+    "hamburguesas": [
+      {
+        "nombre": "El tren ",
+        "descripcion": "el tren2",
+        "precio": "67",
+        "foto": "el_tren4.png"
+      }
+    ],
+    "logo": "el_tren_5.png"
   }
 ]

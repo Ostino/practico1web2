@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+
+<h1>Editar Restaurante</h1>
+
+<form action="/admin/editarrestaurante/<%= restaurante.id %>" method="POST" enctype="multipart/form-data">
+  <label>Nombre:</label>
+  <input type="text" name="nombre" value="<%= restaurante.nombre %>" required />
+
+  <label>Logo Actual:</label><br>
+  <img src="/images/<%= restaurante.logo %>" alt="Logo del Restaurante" class="logo" /><br><br>
+
+  <label>Cambiar Logo (opcional):</label>
+  <input type="file" name="logo" accept="image/*" /><br><br>
+
+  <button type="submit">Guardar Cambios</button>
+</form>
+
+<%- include('partials/footer') %>

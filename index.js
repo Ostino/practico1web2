@@ -88,5 +88,57 @@ app.post('/admincrt', upload.fields([
   res.redirect('/');
 });
 
+app.get('/admin/editarrestaurante/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const data = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+  const restaurante = data.find(r => r.id === id);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado');
+  }
+
+  res.render('editarrestaurante', { restaurante });
+});
+
+
+const storageup = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images');  // Carpeta donde se guardan las imágenes
+  },
+  filename: (req, file, cb) => {
+    const nombreRestaurante = req.body.nombre.trim().toLowerCase().replace(/\s+/g, '_');  // Reemplazar espacios por guiones bajos y convertir a minúsculas
+    const extension = path.extname(file.originalname);  // Obtener la extensión del archivo (como .jpg, .png)
+    cb(null, `${nombreRestaurante}${extension}`);  // Asignamos el nombre final a la imagen
+  }
+});
+
+const uploadup = multer({ storage: storageup });
+
+// Ruta para editar restaurante
+app.post('/admin/editarrestaurante/:id', uploadup.single('logo'), (req, res) => {
+  const id = parseInt(req.params.id);
+  let data = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+  const index = data.findIndex(r => r.id === id);
+
+  if (index === -1) return res.status(404).send('Restaurante no encontrado');
+
+  const restaurante = data[index];
+
+  // Actualizar el nombre del restaurante
+  restaurante.nombre = req.body.nombre;
+
+  // Si se sube una nueva imagen, actualizar el logo
+  if (req.file) {
+    restaurante.logo = req.file.filename;  // Asignar el nuevo nombre de la imagen al campo 'logo'
+  }
+  // Si no se sube una nueva imagen, mantenemos la imagen actual (no se cambia el logo)
+  
+  data[index] = restaurante;  // Reemplazar el restaurante con los nuevos datos
+  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2));  // Guardar los datos actualizados en el JSON
+
+  res.redirect('/admin');  // Redirigir al admin donde aparece la lista de restaurantes
+});
+
+
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
