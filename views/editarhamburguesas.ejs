@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+
+<h2>Hamburguesas de <%= restaurante.nombre %></h2>
+
+<!-- Botón para añadir una nueva hamburguesa -->
+<a href="/admin/agregarhamburguesa/<%= restaurante.id %>">
+  <button>Agregar Hamburguesa</button>
+</a>
+
+
+<!-- Lista de hamburguesas -->
+<ul>
+  <% restaurante.hamburguesas.forEach((hamburguesa, index) => { %>
+    <div>
+      <p><%= hamburguesa.nombre %></p>
+  
+      <!-- Botón para editar hamburguesa -->
+      <a href="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>">
+        <button>Editar</button>
+      </a>
+  
+      <!-- Botón para borrar hamburguesa -->
+      <form action="/admin/borrarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" onsubmit="return confirm('¿Eliminar esta hamburguesa?')">
+        <button type="submit">Eliminar</button>
+      </form>
+    </div>
+  <% }) %>
+  
+</ul>
+<%- include('partials/footer') %>

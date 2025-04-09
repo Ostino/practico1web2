@@ -9,6 +9,7 @@
         "nombre": "Clásica Suprema",
         "descripcion": "Doble carne, cheddar, lechuga y salsa especial.",
         "precio": 45,
+        "hid": 1,
         "foto": "classica.png"
       }
     ]
@@ -23,6 +24,7 @@
         "nombre": "Fusion Bacon",
         "descripcion": "Bacon crujiente, queso azul y cebolla caramelizada.",
         "precio": 50,
+        "hid": 1,
         "foto": "fusion.png"
       }
     ]
@@ -37,7 +39,23 @@
         "nombre": "La toro",
         "descripcion": "locomotora",
         "precio": "34",
+        "hid": 1,
         "foto": "la_toro3.png"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "El tren 2",
+    "logo": "el_tren_2.png",
+    "likes": 5,
+    "hamburguesas": [
+      {
+        "nombre": "El tren",
+        "descripcion": "gloglgo",
+        "precio": "53",
+        "hid": 1,
+        "foto": "el_tren4.png"
       }
     ]
   }

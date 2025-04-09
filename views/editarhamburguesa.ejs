@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h2>Editar Hamburguesa: <%= hamburguesa.nombre %> en <%= restaurante.nombre %></h2>
+
+<form action="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" enctype="multipart/form-data">
+  <label for="hamburguesa_nombre">Nombre:</label>
+  <input type="text" name="hamburguesa_nombre" value="<%= hamburguesa.nombre %>" required>
+
+  <label for="hamburguesa_descripcion">Descripción:</label>
+  <textarea name="hamburguesa_descripcion" required><%= hamburguesa.descripcion %></textarea>
+
+  <label for="hamburguesa_precio">Precio:</label>
+  <input type="text" name="hamburguesa_precio" value="<%= hamburguesa.precio %>" required>
+
+  <label for="hamburguesa_foto">Foto:</label>
+  <input type="file" name="hamburguesa_foto">
+
+  <button type="submit">Guardar Cambios</button>
+</form>
+
+<%- include('partials/footer') %>

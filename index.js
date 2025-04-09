@@ -6,6 +6,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -174,6 +177,138 @@ app.post('/admin/borrarrestaurante/:id', (req, res) => {
 
   res.redirect('/admin');  // Redirigir a la página de administración
 });
+
+app.get('/admin/editarhamburguesas/:restauranteId', (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+
+  // Obtener los restaurantes desde el archivo JSON
+  const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado');
+  }
+
+  // Pasar el restaurante y las hamburguesas a la vista
+  res.render('editarhamburguesas', { restaurante });
+});
+
+app.get('/admin/agregarhamburguesa/:restauranteId', (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+
+  // Obtener los restaurantes desde el archivo JSON
+  const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado');
+  }
+
+  // Mostrar el formulario de agregar hamburguesa
+  res.render('agregarhamburguesa', { restaurante });
+});
+app.post('/admin/agregarhamburguesa/:restauranteId', upload.fields([
+  { name: 'hamburguesa_foto', maxCount: 1 }
+]), (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+  const { hamburguesa_nombre, hamburguesa_descripcion, hamburguesa_precio } = req.body;
+  const { hamburguesa_foto } = req.files;
+
+  if (!hamburguesa_nombre || !hamburguesa_descripcion || !hamburguesa_precio || !hamburguesa_foto) {
+    return res.status(400).send('Faltan campos obligatorios.');
+  }
+
+  const restaurantes = likesController.getRestaurantes();
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado.');
+  }
+
+  const cleanFileName = (str) => str.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
+  const ultimoHid = restaurante.hamburguesas.length > 0 
+    ? Math.max(...restaurante.hamburguesas.map(h => h.hid)) 
+    : 0;
+  const nuevoHid = ultimoHid + 1;
+
+  const hamburguesaFileName = `${cleanFileName(hamburguesa_nombre)}${restauranteId}.png`;
+
+  // Guardar imagen
+  fs.writeFileSync(`public/images/${hamburguesaFileName}`, hamburguesa_foto[0].buffer);
+
+  const nuevaHamburguesa = {
+    hid: nuevoHid,
+    nombre: hamburguesa_nombre,
+    descripcion: hamburguesa_descripcion,
+    precio: hamburguesa_precio,
+    foto: hamburguesaFileName
+  };
+
+  restaurante.hamburguesas.push(nuevaHamburguesa);
+  likesController.saveRestaurantes(restaurantes);
+
+  res.redirect(`/admin/editarhamburguesas/${restauranteId}`);
+});
+
+
+
+
+app.get('/admin/editarhamburguesa/:restauranteId/:hid', (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+  const hid = parseInt(req.params.hid);  // Asegúrate de convertirlo a número
+
+  // Obtener los restaurantes desde el archivo JSON
+  const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado');
+  }
+
+  // Buscar la hamburguesa por "hid"
+  const hamburguesa = restaurante.hamburguesas.find(h => h.hid === hid);
+
+  if (!hamburguesa) {
+    return res.status(404).send('Hamburguesa no encontrada');
+  }
+
+  // Pasar la hamburguesa y el restaurante a la vista de edición
+  res.render('editarhamburguesa', { restaurante, hamburguesa });
+});
+
+app.post('/admin/borrarhamburguesa/:restauranteId/:hid', (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+  const hid = parseInt(req.params.hid);
+
+  const restaurantes = likesController.getRestaurantes();
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado.');
+  }
+
+  const hamburguesaIndex = restaurante.hamburguesas.findIndex(h => h.hid === hid);
+
+  if (hamburguesaIndex === -1) {
+    return res.status(404).send('Hamburguesa no encontrada.');
+  }
+
+  const hamburguesa = restaurante.hamburguesas[hamburguesaIndex];
+
+  // Borrar imagen del sistema de archivos
+  const imagePath = path.join(__dirname, 'public', 'images', hamburguesa.foto);
+  if (fs.existsSync(imagePath)) {
+    fs.unlinkSync(imagePath);
+  }
+
+  // Eliminar hamburguesa del array
+  restaurante.hamburguesas.splice(hamburguesaIndex, 1);
+  likesController.saveRestaurantes(restaurantes);
+
+  res.redirect(`/admin/editarhamburguesas/${restauranteId}`);
+});
+
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
