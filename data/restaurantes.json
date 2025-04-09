@@ -48,7 +48,7 @@
     "id": 4,
     "nombre": "El tren 2",
     "logo": "el_tren_2.png",
-    "likes": 5,
+    "likes": 6,
     "hamburguesas": [
       {
         "nombre": "El tren",
