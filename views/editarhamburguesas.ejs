@@ -1,30 +1,40 @@
 <%- include('partials/header') %>
 
-<h2>Hamburguesas de <%= restaurante.nombre %></h2>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h2 class="m-0">Hamburguesas de <%= restaurante.nombre %></h2>
+    <a href="/admin/agregarhamburguesa/<%= restaurante.id %>" class="btn btn-success">
+      Agregar Hamburguesa
+    </a>
+  </div>
+</div>
 
-<!-- Botón para añadir una nueva hamburguesa -->
-<a href="/admin/agregarhamburguesa/<%= restaurante.id %>">
-  <button>Agregar Hamburguesa</button>
-</a>
 
+<div class="container mt-5 mb-5">
+  <h3 class="mb-4">Hamburguesas registradas</h3>
+  <div class="row row-cols-1 g-4">
+    <% restaurante.hamburguesas.forEach((hamburguesa, index) => { %>
+      <div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body d-flex justify-content-between align-items-center flex-wrap">
+            <p class="card-text fw-semibold mb-2 mb-md-0"><%= hamburguesa.nombre %></p>
 
-<!-- Lista de hamburguesas -->
-<ul>
-  <% restaurante.hamburguesas.forEach((hamburguesa, index) => { %>
-    <div>
-      <p><%= hamburguesa.nombre %></p>
-  
-      <!-- Botón para editar hamburguesa -->
-      <a href="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>">
-        <button>Editar</button>
-      </a>
-  
-      <!-- Botón para borrar hamburguesa -->
-      <form action="/admin/borrarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" onsubmit="return confirm('¿Eliminar esta hamburguesa?')">
-        <button type="submit">Eliminar</button>
-      </form>
-    </div>
-  <% }) %>
-  
-</ul>
+            <div class="d-flex gap-2">
+              <a href="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" class="btn btn-sm btn-outline-primary">
+                Editar
+              </a>
+
+              <form action="/admin/borrarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" onsubmit="return confirm('¿Eliminar esta hamburguesa?')">
+                <button type="submit" class="btn btn-sm btn-outline-danger">
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
 <%- include('partials/footer') %>

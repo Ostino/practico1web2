@@ -1,31 +1,58 @@
 <%- include('partials/header') %>
 
-  <h1>Agregar nuevo restaurante</h1>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center mb-4">Agregar nuevo restaurante</h1>
 
-  <form action="/admincrt" method="POST" enctype="multipart/form-data">
-    <label for="nombre">Nombre del restaurante:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
+            <form action="/admincrt" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del restaurante</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+              </div>
 
-    <label for="logo">Logo del restaurante (PNG):</label>
-    <input type="file" id="logo" name="logo" accept="image/png" required><br><br>
+              <div class="mb-3">
+                <label for="logo" class="form-label">Logo del restaurante (PNG)</label>
+                <input type="file" class="form-control" id="logo" name="logo" accept="image/png" required>
+              </div>
 
-    <h2>Hamburguesa participante</h2>
+              <h4 class="mt-4 mb-3">Hamburguesa participante</h4>
 
-    <label for="hamburguesa_nombre">Nombre:</label>
-    <input type="text" id="hamburguesa_nombre" name="hamburguesa_nombre" required><br><br>
+              <div class="mb-3">
+                <label for="hamburguesa_nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="hamburguesa_nombre" name="hamburguesa_nombre" required>
+              </div>
 
-    <label for="hamburguesa_descripcion">Descripción:</label><br>
-    <textarea id="hamburguesa_descripcion" name="hamburguesa_descripcion" required></textarea><br><br>
+              <div class="mb-3">
+                <label for="hamburguesa_descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="hamburguesa_descripcion" name="hamburguesa_descripcion" rows="3" required></textarea>
+              </div>
 
-    <label for="hamburguesa_precio">Precio:</label>
-    <input type="number" id="hamburguesa_precio" name="hamburguesa_precio" required><br><br>
+              <div class="mb-3">
+                <label for="hamburguesa_precio" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="hamburguesa_precio" name="hamburguesa_precio" required>
+              </div>
 
-    <label for="hamburguesa_foto">Foto de la hamburguesa (PNG):</label>
-    <input type="file" id="hamburguesa_foto" name="hamburguesa_foto" accept="image/png" required><br><br>
+              <div class="mb-4">
+                <label for="hamburguesa_foto" class="form-label">Foto de la hamburguesa (PNG)</label>
+                <input type="file" class="form-control" id="hamburguesa_foto" name="hamburguesa_foto" accept="image/png" required>
+              </div>
 
-    <button type="submit">Agregar restaurante</button>
-  </form>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Agregar restaurante</button>
+              </div>
+            </form>
 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  
+</body>
 
 <%- include('partials/footer') %>

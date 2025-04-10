@@ -1,21 +1,34 @@
 <%- include('partials/header') %>
 
-<h2>Editar Hamburguesa: <%= hamburguesa.nombre %> en <%= restaurante.nombre %></h2>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Editar Hamburguesa: <%= hamburguesa.nombre %> en <%= restaurante.nombre %></h2>
 
-<form action="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" enctype="multipart/form-data">
-  <label for="hamburguesa_nombre">Nombre:</label>
-  <input type="text" name="hamburguesa_nombre" value="<%= hamburguesa.nombre %>" required>
+  <form action="/admin/editarhamburguesa/<%= restaurante.id %>/<%= hamburguesa.hid %>" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="hamburguesa_nombre" class="form-label">Nombre:</label>
+      <input type="text" name="hamburguesa_nombre" class="form-control" value="<%= hamburguesa.nombre %>" required>
+    </div>
 
-  <label for="hamburguesa_descripcion">Descripción:</label>
-  <textarea name="hamburguesa_descripcion" required><%= hamburguesa.descripcion %></textarea>
+    <div class="mb-3">
+      <label for="hamburguesa_descripcion" class="form-label">Descripción:</label>
+      <textarea name="hamburguesa_descripcion" class="form-control" required><%= hamburguesa.descripcion %></textarea>
+    </div>
 
-  <label for="hamburguesa_precio">Precio:</label>
-  <input type="text" name="hamburguesa_precio" value="<%= hamburguesa.precio %>" required>
+    <div class="mb-3">
+      <label for="hamburguesa_precio" class="form-label">Precio:</label>
+      <input type="text" name="hamburguesa_precio" class="form-control" value="<%= hamburguesa.precio %>" required>
+    </div>
 
-  <label for="hamburguesa_foto">Foto:</label>
-  <input type="file" name="hamburguesa_foto">
+    <div class="mb-3">
+      <label for="hamburguesa_foto" class="form-label">Foto (opcional):</label>
+      <input type="file" name="hamburguesa_foto" class="form-control" accept="image/*">
+    </div>
 
-  <button type="submit">Guardar Cambios</button>
-</form>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </div>
+  </form>
+</div>
+
 
 <%- include('partials/footer') %>

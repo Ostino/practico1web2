@@ -1,12 +1,16 @@
 <%- include('partials/header') %>
 
+<div class="container mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3">
+  <h1 class="m-0">Restaurantes Participantes</h1>
+</div>
+
 <div class="restaurantes">
   <% restaurantes.forEach(r => { %>
     <div class="restaurante">
       <a href="/restaurante/<%= r.id %>">
         <img src="/images/<%= r.logo %>" alt="<%= r.nombre %>">
         <h2><%= r.nombre %></h2>
-        <p>❤️ <%= r.likes || 0 %> likes</p> <!-- Aquí se muestran los likes -->
+        <p><%= r.likes || 0 %> likes</p>
       </a>
     </div>
   <% }) %>

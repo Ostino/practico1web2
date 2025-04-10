@@ -1,18 +1,31 @@
 <%- include('partials/header') %>
 
-<h1>Editar Restaurante</h1>
+<div class="container mt-5 mb-5 d-flex justify-content-center">
+  <div class="card p-4 shadow" style="max-width: 500px; width: 100%;">
+    <h2 class="mb-4 text-center">Editar Restaurante</h2>
 
-<form action="/admin/editarrestaurante/<%= restaurante.id %>" method="POST" enctype="multipart/form-data">
-  <label>Nombre:</label>
-  <input type="text" name="nombre" value="<%= restaurante.nombre %>" required />
+    <form action="/admin/editarrestaurante/<%= restaurante.id %>" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="<%= restaurante.nombre %>" class="form-control" required />
+      </div>
 
-  <label>Logo Actual:</label><br>
-  <img src="/images/<%= restaurante.logo %>" alt="Logo del Restaurante" class="logo" /><br><br>
+      <div class="mb-3 text-center">
+        <label class="form-label">Logo Actual:</label><br>
+        <img src="/images/<%= restaurante.logo %>" alt="Logo del Restaurante" class="img-fluid rounded" style="max-height: 350px;" />
+      </div>
 
-  <label>Cambiar Logo (opcional):</label>
-  <input type="file" name="logo" accept="image/*" /><br><br>
+      <div class="mb-4">
+        <label for="logo" class="form-label">Cambiar Logo (opcional):</label>
+        <input type="file" id="logo" name="logo" accept="image/*" class="form-control" />
+      </div>
 
-  <button type="submit">Guardar Cambios</button>
-</form>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 <%- include('partials/footer') %>

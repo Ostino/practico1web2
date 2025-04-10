@@ -3,7 +3,7 @@
     "id": 1,
     "nombre": "La Burguesía 2",
     "logo": "burguesia.png",
-    "likes": 2,
+    "likes": 8,
     "hamburguesas": [
       {
         "nombre": "Clásica Suprema",
@@ -18,7 +18,7 @@
     "id": 2,
     "nombre": "Burger Lab",
     "logo": "lab.png",
-    "likes": 6,
+    "likes": 12,
     "hamburguesas": [
       {
         "nombre": "Fusion Bacon",
@@ -31,31 +31,23 @@
   },
   {
     "id": 3,
-    "nombre": "La locomotora",
-    "logo": "la_locomotora.png",
-    "likes": 5,
-    "hamburguesas": [
-      {
-        "nombre": "La toro",
-        "descripcion": "locomotora",
-        "precio": "34",
-        "hid": 1,
-        "foto": "la_toro3.png"
-      }
-    ]
-  },
-  {
-    "id": 4,
     "nombre": "El tren 2",
     "logo": "el_tren_2.png",
-    "likes": 6,
+    "likes": 8,
     "hamburguesas": [
       {
-        "nombre": "El tren",
-        "descripcion": "gloglgo",
-        "precio": "53",
         "hid": 1,
-        "foto": "el_tren4.png"
+        "nombre": "La buena",
+        "descripcion": "asdasd",
+        "precio": "32",
+        "foto": "la_buena3.png"
+      },
+      {
+        "hid": 2,
+        "nombre": "La avioneta 2",
+        "descripcion": "asdasd1",
+        "precio": "30",
+        "foto": "la_avioneta3.png"
       }
     ]
   }

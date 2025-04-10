@@ -31,7 +31,6 @@ app.get('/restaurante/:id', (req, res) => {
   res.render('restaurant', { restaurante });
 });
 
-
 app.post('/like/:id', (req, res) => {
   const id = req.params.id;
   const likes = likesController.incrementarLike(id);
@@ -42,6 +41,7 @@ app.post('/like/:id', (req, res) => {
 
   res.json({ likes });
 });
+
 app.get('/admincrt', (req, res) => {
   res.render('admin');
 });
@@ -78,6 +78,7 @@ app.post('/admincrt', upload.fields([
     logo: logoFileName,
     likes: 0,
     hamburguesas: [{
+      hid: 1,
       nombre: hamburguesa_nombre,
       descripcion: hamburguesa_descripcion,
       precio: hamburguesa_precio,
@@ -103,21 +104,18 @@ app.get('/admin/editarrestaurante/:id', (req, res) => {
   res.render('editarrestaurante', { restaurante });
 });
 
-
 const storageup = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images');  // Carpeta donde se guardan las imágenes
+    cb(null, 'public/images');
   },
   filename: (req, file, cb) => {
-    const nombreRestaurante = req.body.nombre.trim().toLowerCase().replace(/\s+/g, '_');  // Reemplazar espacios por guiones bajos y convertir a minúsculas
-    const extension = path.extname(file.originalname);  // Obtener la extensión del archivo (como .jpg, .png)
-    cb(null, `${nombreRestaurante}${extension}`);  // Asignamos el nombre final a la imagen
+    const nombreRestaurante = req.body.nombre.trim().toLowerCase().replace(/\s+/g, '_');  
+    const extension = path.extname(file.originalname);  
+    cb(null, `${nombreRestaurante}${extension}`);  
   }
 });
-
 const uploadup = multer({ storage: storageup });
 
-// Ruta para editar restaurante
 app.post('/admin/editarrestaurante/:id', uploadup.single('logo'), (req, res) => {
   const id = parseInt(req.params.id);
   let data = JSON.parse(fs.readFileSync('data/restaurantes.json'));
@@ -127,33 +125,30 @@ app.post('/admin/editarrestaurante/:id', uploadup.single('logo'), (req, res) => 
 
   const restaurante = data[index];
 
-  // Actualizar el nombre del restaurante
+  
   restaurante.nombre = req.body.nombre;
 
-  // Si se sube una nueva imagen, actualizar el logo
-  if (req.file) {
-    restaurante.logo = req.file.filename;  // Asignar el nuevo nombre de la imagen al campo 'logo'
-  }
-  // Si no se sube una nueva imagen, mantenemos la imagen actual (no se cambia el logo)
   
-  data[index] = restaurante;  // Reemplazar el restaurante con los nuevos datos
-  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2));  // Guardar los datos actualizados en el JSON
+  if (req.file) {
+    restaurante.logo = req.file.filename;  
+  }
+  
+  data[index] = restaurante;  
+  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2)); 
 
-  res.redirect('/admin');  // Redirigir al admin donde aparece la lista de restaurantes
+  res.redirect('/admin');
 });
 
 app.post('/admin/borrarrestaurante/:id', (req, res) => {
   const id = parseInt(req.params.id);
   let data = JSON.parse(fs.readFileSync('data/restaurantes.json'));
 
-  // Buscar el restaurante a eliminar
   const index = data.findIndex(r => r.id === id);
   
   if (index === -1) return res.status(404).send('Restaurante no encontrado');
 
   const restaurante = data[index];
   
-  // Eliminar la imagen del logo del restaurante
   const logoPath = path.join(__dirname, 'public/images', restaurante.logo);
   fs.unlink(logoPath, (err) => {
     if (err) {
@@ -161,7 +156,6 @@ app.post('/admin/borrarrestaurante/:id', (req, res) => {
     }
   });
 
-  // Eliminar las imágenes de las hamburguesas del restaurante
   restaurante.hamburguesas.forEach(hamburguesa => {
     const hamburguesaImagePath = path.join(__dirname, 'public/images', hamburguesa.foto);
     fs.unlink(hamburguesaImagePath, (err) => {
@@ -171,17 +165,15 @@ app.post('/admin/borrarrestaurante/:id', (req, res) => {
     });
   });
 
-  // Eliminar el restaurante del arreglo de datos
-  data.splice(index, 1);  // Eliminar el restaurante por índice
-  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2));  // Guardar los cambios en el archivo JSON
+  data.splice(index, 1);  
+  fs.writeFileSync('data/restaurantes.json', JSON.stringify(data, null, 2)); 
 
-  res.redirect('/admin');  // Redirigir a la página de administración
+  res.redirect('/admin');
 });
 
 app.get('/admin/editarhamburguesas/:restauranteId', (req, res) => {
   const restauranteId = parseInt(req.params.restauranteId);
 
-  // Obtener los restaurantes desde el archivo JSON
   const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
   const restaurante = restaurantes.find(r => r.id === restauranteId);
 
@@ -189,14 +181,12 @@ app.get('/admin/editarhamburguesas/:restauranteId', (req, res) => {
     return res.status(404).send('Restaurante no encontrado');
   }
 
-  // Pasar el restaurante y las hamburguesas a la vista
   res.render('editarhamburguesas', { restaurante });
 });
 
 app.get('/admin/agregarhamburguesa/:restauranteId', (req, res) => {
   const restauranteId = parseInt(req.params.restauranteId);
 
-  // Obtener los restaurantes desde el archivo JSON
   const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
   const restaurante = restaurantes.find(r => r.id === restauranteId);
 
@@ -204,9 +194,9 @@ app.get('/admin/agregarhamburguesa/:restauranteId', (req, res) => {
     return res.status(404).send('Restaurante no encontrado');
   }
 
-  // Mostrar el formulario de agregar hamburguesa
   res.render('agregarhamburguesa', { restaurante });
 });
+
 app.post('/admin/agregarhamburguesa/:restauranteId', upload.fields([
   { name: 'hamburguesa_foto', maxCount: 1 }
 ]), (req, res) => {
@@ -234,7 +224,6 @@ app.post('/admin/agregarhamburguesa/:restauranteId', upload.fields([
 
   const hamburguesaFileName = `${cleanFileName(hamburguesa_nombre)}${restauranteId}.png`;
 
-  // Guardar imagen
   fs.writeFileSync(`public/images/${hamburguesaFileName}`, hamburguesa_foto[0].buffer);
 
   const nuevaHamburguesa = {
@@ -251,14 +240,10 @@ app.post('/admin/agregarhamburguesa/:restauranteId', upload.fields([
   res.redirect(`/admin/editarhamburguesas/${restauranteId}`);
 });
 
-
-
-
 app.get('/admin/editarhamburguesa/:restauranteId/:hid', (req, res) => {
   const restauranteId = parseInt(req.params.restauranteId);
-  const hid = parseInt(req.params.hid);  // Asegúrate de convertirlo a número
+  const hid = parseInt(req.params.hid);  
 
-  // Obtener los restaurantes desde el archivo JSON
   const restaurantes = JSON.parse(fs.readFileSync('data/restaurantes.json'));
   const restaurante = restaurantes.find(r => r.id === restauranteId);
 
@@ -266,15 +251,57 @@ app.get('/admin/editarhamburguesa/:restauranteId/:hid', (req, res) => {
     return res.status(404).send('Restaurante no encontrado');
   }
 
-  // Buscar la hamburguesa por "hid"
   const hamburguesa = restaurante.hamburguesas.find(h => h.hid === hid);
 
   if (!hamburguesa) {
     return res.status(404).send('Hamburguesa no encontrada');
   }
 
-  // Pasar la hamburguesa y el restaurante a la vista de edición
   res.render('editarhamburguesa', { restaurante, hamburguesa });
+});
+
+app.post('/admin/editarhamburguesa/:restauranteId/:hid', upload.fields([
+  { name: 'hamburguesa_foto', maxCount: 1 }
+]), (req, res) => {
+  const restauranteId = parseInt(req.params.restauranteId);
+  const hid = parseInt(req.params.hid);
+  const { hamburguesa_nombre, hamburguesa_descripcion, hamburguesa_precio } = req.body;
+  const { hamburguesa_foto } = req.files;
+
+  const restaurantes = likesController.getRestaurantes();
+  const restaurante = restaurantes.find(r => r.id === restauranteId);
+
+  if (!restaurante) {
+    return res.status(404).send('Restaurante no encontrado');
+  }
+
+  const hamburguesa = restaurante.hamburguesas.find(h => h.hid === hid);
+
+  if (!hamburguesa) {
+    return res.status(404).send('Hamburguesa no encontrada');
+  }
+
+  const cleanFileName = (str) => str.trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
+  const nombreFinal = hamburguesa_nombre ? hamburguesa_nombre : hamburguesa.nombre;
+  const descripcionFinal = hamburguesa_descripcion ? hamburguesa_descripcion : hamburguesa.descripcion;
+  const precioFinal = hamburguesa_precio ? hamburguesa_precio : hamburguesa.precio;
+
+  let hamburguesaFileName = hamburguesa.foto;
+
+  if (hamburguesa_foto) {
+    hamburguesaFileName = `${cleanFileName(nombreFinal)}${restauranteId}.png`;
+    fs.writeFileSync(`public/images/${hamburguesaFileName}`, hamburguesa_foto[0].buffer);
+  }
+
+  hamburguesa.nombre = nombreFinal;
+  hamburguesa.descripcion = descripcionFinal;
+  hamburguesa.precio = precioFinal;
+  hamburguesa.foto = hamburguesaFileName;
+
+  likesController.saveRestaurantes(restaurantes);
+
+  res.redirect(`/admin/editarhamburguesas/${restauranteId}`);
 });
 
 app.post('/admin/borrarhamburguesa/:restauranteId/:hid', (req, res) => {
@@ -296,19 +323,16 @@ app.post('/admin/borrarhamburguesa/:restauranteId/:hid', (req, res) => {
 
   const hamburguesa = restaurante.hamburguesas[hamburguesaIndex];
 
-  // Borrar imagen del sistema de archivos
   const imagePath = path.join(__dirname, 'public', 'images', hamburguesa.foto);
   if (fs.existsSync(imagePath)) {
     fs.unlinkSync(imagePath);
   }
 
-  // Eliminar hamburguesa del array
   restaurante.hamburguesas.splice(hamburguesaIndex, 1);
   likesController.saveRestaurantes(restaurantes);
 
   res.redirect(`/admin/editarhamburguesas/${restauranteId}`);
 });
-
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));

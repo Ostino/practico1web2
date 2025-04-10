@@ -3,6 +3,8 @@ body {
     background-color: #fff8f0;
     margin: 0;
     padding: 0;
+        color: #502415;
+
   }
   
   header {
@@ -42,21 +44,7 @@ body {
     color: white;
   }
   
-  .boton-agregar {
-    display: inline-block;
-    background-color: #28a745;
-    color: white;
-    padding: 10px 15px;
+  a {
     text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    color: #502415;
   }
-  .boton-agregar:hover {
-    background-color: #218838;
-  }
-  /* Asegúrate de que la imagen tenga un tamaño de 500x500 px */
-.logo {
-  width: 500px;
-  height: 500px;
-  object-fit: cover; /* Esto asegura que la imagen se recorte adecuadamente si no es cuadrada */
-}
